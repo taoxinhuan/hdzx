@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.StudentMapper">
+	<resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Student">
+		<id column="student_num" jdbcType="CHAR" property="studentNum" />
+		<result column="dept_num" jdbcType="CHAR" property="deptNum" />
+		<result column="major_num" jdbcType="CHAR" property="majorNum" />
+		<result column="student_name" jdbcType="VARCHAR" property="studentName" />
+		<result column="student_sex" jdbcType="CHAR" property="studentSex" />
+		<result column="student_birthday" jdbcType="TIMESTAMP"
+			property="studentBirthday" />
+		<result column="student_password" jdbcType="VARCHAR" property="studentPassword" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		student_num, dept_num,major_num, student_name, student_sex, student_birthday,
+		student_password
+	</sql>
+	<delete id="delete" parameterType="java.lang.String">
+		delete from tb_student
+		where student_num = #{studentNum,jdbcType=CHAR}
+	</delete>
+	<insert id="add" parameterType="com.taoxinhuan.main.PO.Student">
+		insert into tb_student (student_num,dept_num, major_num, student_name,
+		student_sex, student_birthday, student_password
+		)
+		values (
+		#{studentNum,jdbcType=CHAR},
+		#{deptNum,jdbcType=CHAR},
+		#{majorNum,jdbcType=CHAR},
+		#{studentName,jdbcType=VARCHAR},
+		#{studentSex,jdbcType=CHAR}, #{studentBirthday,jdbcType=TIMESTAMP},
+		#{studentPassword,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.taoxinhuan.main.PO.Student">
+		update tb_student
+		<set>
+			<if test="majorNum != null">
+				major_num = #{majorNum,jdbcType=CHAR},
+			</if>
+			<if test="deptNum != null">
+				dept_num = #{deptNum,jdbcType=CHAR},
+			</if>
+			<if test="studentName != null">
+				student_name = #{studentName,jdbcType=VARCHAR},
+			</if>
+			<if test="studentSex != null">
+				student_sex = #{studentSex,jdbcType=CHAR},
+			</if>
+			<if test="studentBirthday != null">
+				student_birthday = #{studentBirthday,jdbcType=TIMESTAMP},
+			</if>
+			<if test="studentPassword != null">
+				student_password = #{studentPassword,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where student_num = #{studentNum,jdbcType=CHAR}
+	</update>
+
+	<select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_student
+		where student_num = #{studentNum,jdbcType=CHAR}
+	</select>
+
+	<select id="studentLogin" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_student
+		where student_num = #{studentNum,jdbcType=CHAR}
+		and student_password=#{password,jdbcType=CHAR}
+	</select>
+
+
+	<select id="listStudent" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_student 
+		<where>
+        <if test="query.deptNum != null and query.deptNum != '' " > AND dept_num=#{query.deptNum }</if>
+        <if test="query.majorNum != null and query.majorNum != '' " > AND major_num=#{query.majorNum }</if>
+        <if test="query.studentName != null and query.studentName != '' " > AND student_name like concat('%',#{query.studentName},'%')</if>
+        <if test="query.studentNum != null and query.studentNum != '' " > AND student_num=#{query.studentNum}</if>
+		</where>	
+	</select>
+
+</mapper>

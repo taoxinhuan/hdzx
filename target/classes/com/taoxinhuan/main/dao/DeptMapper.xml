@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.DeptMapper">
+  <resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Dept">
+    <id column="dept_num" jdbcType="CHAR" property="deptNum" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="dept_chairman" jdbcType="VARCHAR" property="deptChairman" />
+    <result column="dept_tel" jdbcType="VARCHAR" property="deptTel" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.taoxinhuan.main.PO.Dept">
+    <result column="dept_desc" jdbcType="LONGVARCHAR" property="deptDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dept_num, dept_name, dept_chairman, dept_tel
+  </sql>
+  <sql id="Blob_Column_List">
+    dept_desc
+  </sql>
+  <select id="get" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_dept
+    where dept_num = #{deptNum,jdbcType=CHAR}
+  </select>
+  
+  <select id="listDept"  resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_dept
+    <where>
+        <if test="query.deptNum != null and query.deptNum != '' " > AND dept_num=#{query.deptNum }</if>
+        <if test="query.deptName != null and query.deptName != '' " > AND dept_name like concat('%',#{query.deptName},'%')</if>
+	</where>
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String">
+    delete from tb_dept
+    where dept_num = #{deptNum,jdbcType=CHAR}
+  </delete>
+
+  <insert id="add" parameterType="com.taoxinhuan.main.PO.Dept">
+    insert into tb_dept
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptNum != null">
+        dept_num,
+      </if>
+      <if test="deptName != null">
+        dept_name,
+      </if>
+      <if test="deptChairman != null">
+        dept_chairman,
+      </if>
+      <if test="deptTel != null">
+        dept_tel,
+      </if>
+      <if test="deptDesc != null">
+        dept_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptNum != null">
+        #{deptNum,jdbcType=CHAR},
+      </if>
+      <if test="deptName != null">
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptChairman != null">
+        #{deptChairman,jdbcType=VARCHAR},
+      </if>
+      <if test="deptTel != null">
+        #{deptTel,jdbcType=VARCHAR},
+      </if>
+      <if test="deptDesc != null">
+        #{deptDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.taoxinhuan.main.PO.Dept">
+    update tb_dept
+    <set>
+      <if test="deptName != null">
+        dept_name = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptChairman != null">
+        dept_chairman = #{deptChairman,jdbcType=VARCHAR},
+      </if>
+      <if test="deptTel != null">
+        dept_tel = #{deptTel,jdbcType=VARCHAR},
+      </if>
+      <if test="deptDesc != null">
+        dept_desc = #{deptDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where dept_num = #{deptNum,jdbcType=CHAR}
+  </update>
+
+</mapper>

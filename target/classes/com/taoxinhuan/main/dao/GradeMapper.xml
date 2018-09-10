@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.GradeMapper">
+  <resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Grade">
+    <result column="student_num" jdbcType="CHAR" property="studentNum" />
+    <result column="course_num" jdbcType="CHAR" property="courseNum" />
+    <result column="teacher_num" jdbcType="CHAR" property="teacherNum" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+  </resultMap>
+  <sql id="AllColumn">
+  student_num,course_num,teacher_num,grade
+  </sql>
+
+  <insert id="add" parameterType="com.taoxinhuan.main.PO.Grade">
+    insert into tb_grade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="studentNum != null">
+        student_num,
+      </if>
+      <if test="courseNum != null">
+        course_num,
+      </if>
+      <if test="teacherNum != null">
+        teacher_num,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="studentNum != null">
+        #{studentNum,jdbcType=CHAR},
+      </if>
+      <if test="courseNum != null">
+        #{courseNum,jdbcType=CHAR},
+      </if>
+      <if test="teacherNum != null">
+        #{teacherNum,jdbcType=CHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <delete id="deleteByStuNumAndCourseNum">
+    delete from tb_grade
+    where student_num = #{stuNum,jdbcType=CHAR}
+    and course_num = #{courseNum,jdbcType=CHAR}
+  </delete>
+  
+   <select id="getByStuNumAndCourseNum" resultMap="BaseResultMap">
+    select
+     <include refid="AllColumn"></include>
+     from tb_grade
+    where student_num = #{stuNum,jdbcType=CHAR}
+    and course_num = #{courseNum,jdbcType=CHAR}
+    limit 0,1
+  </select>
+  
+  
+  <update id="update" parameterType="com.taoxinhuan.main.PO.Grade">
+    update tb_grade
+    set grade=#{grade,jdbcType=INTEGER}
+    where student_num = #{studentNum,jdbcType=CHAR}
+    and course_num = #{courseNum,jdbcType=CHAR}
+  </update>
+  
+  <select id="listByStudentNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select
+     <include refid="AllColumn"></include>
+     from tb_grade
+    where student_num = #{studentNum,jdbcType=CHAR}
+  </select>
+  
+    <select id="listForTeacher"  resultMap="BaseResultMap">
+     select
+     <include refid="AllColumn"></include>
+     from tb_grade
+    where teacher_num = #{query.teacherNum,jdbcType=CHAR}
+    <if test="query.courseNum != null and query.courseNum!= ''" > AND course_num=#{query.courseNum}</if>
+     <if test="query.flag ==null or query.flag==''" > AND grade is null</if>
+     <if test="query.grade !=null and query.grade!= ''" > AND grade <![CDATA[ <]]> 60 </if>
+  </select>
+</mapper>

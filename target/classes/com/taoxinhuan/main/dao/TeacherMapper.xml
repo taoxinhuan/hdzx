@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.TeacherMapper">
+  <resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Teacher">
+    <id column="teacher_num" jdbcType="CHAR" property="teacherNum" />
+    <result column="teacher_password" jdbcType="VARCHAR" property="teacherPassword" />
+    <result column="dept_num" jdbcType="CHAR" property="deptNum" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+    <result column="teacher_sex" jdbcType="CHAR" property="teacherSex" />
+    <result column="teacher_birthday" jdbcType="TIMESTAMP" property="teacherBirthday" />
+    <result column="teacher_title" jdbcType="VARCHAR" property="teacherTitle" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    teacher_num,teacher_password, dept_num, teacher_name, teacher_sex, teacher_birthday, teacher_title
+  </sql>
+  
+  
+  <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_teacher
+    where teacher_num = #{teacherNum,jdbcType=CHAR}
+  </select>
+  
+  <select id="listTeacher" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_teacher
+    	<where>
+        <if test="query.deptNum != null and query.deptNum != '' " > AND dept_num=#{query.deptNum }</if>
+        <if test="query.teacherName != null and query.teacherName != '' " > AND teacher_name like concat('%',#{query.teacherName},'%')</if>
+        <if test="query.teacherNum != null and query.teacherNum != '' " > AND teacher_num=#{query.teacherNum}</if>
+		</where>	
+  </select>
+  
+  
+  <select id="teacherLogin"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_teacher
+    where teacher_num = #{teacherNum,jdbcType=CHAR}
+    and teacher_password=#{password,jdbcType=CHAR}
+  </select>
+  
+  
+  <delete id="delete" parameterType="java.lang.String">
+    delete from tb_teacher
+    where teacher_num = #{teacherNum,jdbcType=CHAR}
+  </delete>
+  
+  
+  
+  <insert id="add" parameterType="com.taoxinhuan.main.PO.Teacher">
+    insert into tb_teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="teacherNum != null">
+        teacher_num,
+      </if>
+      <if test="teacherPassword != null">
+        teacher_password,
+      </if>
+      <if test="deptNum != null">
+        dept_num,
+      </if>
+      <if test="teacherName != null">
+        teacher_name,
+      </if>
+      <if test="teacherSex != null">
+        teacher_sex,
+      </if>
+      <if test="teacherBirthday != null">
+        teacher_birthday,
+      </if>
+      <if test="teacherTitle != null">
+        teacher_title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="teacherNum != null">
+        #{teacherNum,jdbcType=CHAR},
+      </if>
+      <if test="teacherPassword != null">
+        #{teacherPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="deptNum != null">
+        #{deptNum,jdbcType=CHAR},
+      </if>
+      <if test="teacherName != null">
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherSex != null">
+        #{teacherSex,jdbcType=CHAR},
+      </if>
+      <if test="teacherBirthday != null">
+        #{teacherBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherTitle != null">
+        #{teacherTitle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.taoxinhuan.main.PO.Teacher">
+    update tb_teacher
+    <set>
+     <if test="teacherPassword != null">
+        teacher_password=#{teacherPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="deptNum != null">
+        dept_num = #{deptNum,jdbcType=CHAR},
+      </if>
+      <if test="teacherName != null">
+        teacher_name = #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherSex != null">
+        teacher_sex = #{teacherSex,jdbcType=CHAR},
+      </if>
+      <if test="teacherBirthday != null">
+        teacher_birthday = #{teacherBirthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teacherTitle != null">
+        teacher_title = #{teacherTitle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where teacher_num = #{teacherNum,jdbcType=CHAR}
+  </update>
+</mapper>

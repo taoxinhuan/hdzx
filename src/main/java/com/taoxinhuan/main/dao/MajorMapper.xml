@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.MajorMapper">
+  <resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Major">
+    <id column="major_num" jdbcType="CHAR" property="majorNum" />
+    <result column="dept_num" jdbcType="CHAR" property="deptNum" />
+    <result column="major_name" jdbcType="VARCHAR" property="majorName" />
+    <result column="major_assistant" jdbcType="VARCHAR" property="majorAssistant" />
+    <result column="major_tel" jdbcType="VARCHAR" property="majorTel" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    major_num, dept_num, major_name, major_assistant, major_tel
+  </sql>
+  <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_major
+    where major_num = #{majorNum,jdbcType=CHAR}
+  </select>
+  
+   <select id="listMajor"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_major
+    	<where>
+        <if test="query.deptNum != null and query.deptNum != '' " > AND dept_num=#{query.deptNum}</if>
+        <if test="query.majorName != null and query.majorName != '' " > AND major_name like concat('%',#{query.majorName},'%')</if>
+		</where>
+  </select>
+  
+  <delete id="delete" parameterType="java.lang.String">
+    delete from tb_major
+    where major_num = #{majorNum,jdbcType=CHAR}
+  </delete>
+  
+  <insert id="add" parameterType="com.taoxinhuan.main.PO.Major">
+    insert into tb_major (major_num, dept_num, major_name, 
+      major_assistant, major_tel)
+    values (#{majorNum,jdbcType=CHAR}, #{deptNum,jdbcType=CHAR}, #{majorName,jdbcType=VARCHAR}, 
+      #{majorAssistant,jdbcType=VARCHAR}, #{majorTel,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="update" parameterType="com.taoxinhuan.main.PO.Major">
+    update tb_major
+    
+    <set>
+      <if test="deptNum != null">
+        dept_num = #{deptNum,jdbcType=VARCHAR},
+      </if>
+      <if test="majorName != null">
+        major_name = #{majorName,jdbcType=VARCHAR},
+      </if>
+      <if test="majorAssistant != null">
+        major_assistant = #{majorAssistant,jdbcType=VARCHAR},
+      </if>
+      <if test="majorTel != null">
+        major_tel = #{majorTel,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where major_num = #{majorNum,jdbcType=CHAR}
+  </update>
+</mapper>

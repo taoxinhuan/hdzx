@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.CourseMapper">
+  <resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Course">
+    <id column="course_num" jdbcType="CHAR" property="courseNum" />
+    <result column="teacher_num" jdbcType="CHAR" property="teacherNum" />
+    <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+    <result column="course_credit" jdbcType="REAL" property="courseCredit" />
+    <result column="course_class" jdbcType="SMALLINT" property="courseClass" />
+    <result column="course_desc" jdbcType="LONGVARCHAR" property="courseDesc" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List">
+    course_num,teacher_num ,course_name, course_credit, course_class,course_desc
+  </sql>
+  
+  
+  <select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_course
+    where course_num = #{courseNum,jdbcType=CHAR}
+  </select>
+  
+  <select id="listCourse"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_course
+     <where>
+        <if test="query.teacherNum != null and query.teacherNum != '' " > AND teacher_num=#{query.teacherNum }</if>
+        <if test="query.courseName != null and query.courseName != '' " >AND course_name like concat('%',#{query.courseName},'%')</if>
+        <if test="query.courseCredit != null and query.courseCredit != '' " > AND course_credit=#{query.courseCredit}</if>
+        <if test="query.courseClass != null and query.courseClass != '' " > AND course_class=#{query.courseClass}</if>
+	</where>
+  </select>
+  
+   <resultMap id="listCourseForStudentMap" type="com.taoxinhuan.main.PO.CourseForStudent">
+    <id column="course_num" jdbcType="CHAR" property="courseNum" />
+    <result column="teacher_num" jdbcType="CHAR" property="teacherNum" />
+    <result column="dept_num" jdbcType="CHAR" property="deptNum" />
+    <result column="teacher_name" jdbcType="VARCHAR" property="teacherName" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="course_name" jdbcType="VARCHAR" property="courseName" />
+    <result column="course_credit" jdbcType="REAL" property="courseCredit" />
+    <result column="course_class" jdbcType="SMALLINT" property="courseClass" />
+    <result column="course_desc" jdbcType="LONGVARCHAR" property="courseDesc" />
+  </resultMap>
+ 
+ <select id="listCourseForStudent" resultMap="listCourseForStudentMap">
+    select d.dept_num,d.dept_name,t.teacher_name,c.*
+	from tb_course c 
+	INNER JOIN tb_teacher t on t.teacher_num=c.teacher_num
+	inner JOIN tb_dept d on t.dept_num=d.dept_num
+	 <where>
+	    d.dept_num=#{query.deptNum}
+	    <if test="query.teacherNum != null and query.teacherNum != '' " > AND c.teacher_num=#{query.teacherNum }</if>
+        <if test="query.courseName != null and query.courseName != '' " >AND c.course_name like concat('%',#{query.courseName},'%')</if>
+        <if test="query.courseCredit != null and query.courseCredit != '' " > AND c.course_credit=#{query.courseCredit}</if>
+        <if test="query.courseClass != null and query.courseClass != '' " > AND c.course_class=#{query.courseClass}</if>
+	</where>
+ </select>
+  
+  <delete id="delete" parameterType="java.lang.String">
+    delete from tb_course
+    where course_num = #{courseNum,jdbcType=CHAR}
+  </delete>
+
+  <insert id="add" parameterType="com.taoxinhuan.main.PO.Course">
+    insert into tb_course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseNum != null">
+        course_num,
+      </if>
+      <if test="teacherNum != null">
+        teacher_num,
+      </if>
+      <if test="courseName != null">
+        course_name,
+      </if>
+      <if test="courseCredit != null">
+        course_credit,
+      </if>
+      <if test="courseClass != null">
+        course_class,
+      </if>
+      <if test="courseDesc != null">
+        course_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseNum != null">
+        #{courseNum,jdbcType=CHAR},
+      </if>
+      <if test="teacherNum != null">
+        #{teacherNum,jdbcType=CHAR},
+      </if>
+      <if test="courseName != null">
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="courseCredit != null">
+        #{courseCredit,jdbcType=REAL},
+      </if>
+      <if test="courseClass != null">
+        #{courseClass,jdbcType=SMALLINT},
+      </if>
+      <if test="courseDesc != null">
+        #{courseDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.taoxinhuan.main.PO.Course">
+    update tb_course
+    <set>
+      <if test="courseName != null">
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherNum != null">
+        teacher_num = #{teacherNum,jdbcType=CHAR},
+      </if>
+      <if test="courseCredit != null">
+        course_credit = #{courseCredit,jdbcType=REAL},
+      </if>
+      <if test="courseClass != null">
+        course_class = #{courseClass,jdbcType=SMALLINT},
+      </if>
+      <if test="courseDesc != null">
+        course_desc = #{courseDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where course_num = #{courseNum,jdbcType=CHAR}
+  </update>
+ 
+</mapper>

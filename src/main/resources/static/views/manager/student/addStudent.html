@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">×</button>
+			<h4 class="modal-title">添加学生信息</h4>
+		</div>
+		<div class="modal-body">
+			<div class="portlet light">
+				<div class="portlet-body form">
+					<form name="form" action="#" class="form-horizontal">
+						<div class="form-body">
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">系部名称：</label>
+								<div class="col-xs-5">
+									<select ng-model="vo.deptNum" class="form-control" ng-change="listMajorByDeptNum()" required>
+										<option value="">请选择</option>
+										<option ng-repeat="dept in vm.depts" value="{{dept.deptNum}}">{{dept.deptName}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">专业名称：</label>
+								<div class="col-xs-5">
+									<select ng-model="vo.majorNum" class="form-control" ng-click="check()" required>
+										<option value="">请选择</option>
+										<option ng-repeat="major in vm.majors" value="{{major.majorNum}}">{{major.majorName}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">学生姓名：</label>
+								<div class="col-xs-5">
+									<input class="form-control" type="text" ng-model="vo.studentName" required/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">学生编号：</label>
+								<div class="col-xs-5">
+									<input class="form-control" type="text" ng-model="vo.studentNum" required/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">学生性别：</label>
+								<div class="col-xs-5">
+									<select ng-model="vo.studentSex" class="form-control" required>
+									    <option value="">请选择</option>
+										<option value="男">男</option>
+										<option value="女">女</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">出生日期：</label>
+								<div class="col-xs-5">
+								<input class="form-control" id="datepicker"
+									data-date-format="yyyy-mm-dd" ng-model="vo.studentBirthday"
+									required />
+								<script>
+									$('#datepicker').datepicker({
+										startView:2,
+									    autoclose:"true"
+									});
+								</script>
+							    </div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-xs-3 control-label city-label">登陆密码：</label>
+								<div class="col-xs-5">
+									<input class="form-control" type="text" disabled="true" ng-model="vo.studentPassword" required/>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" type="button" ng-click="ok()" ng-disabled="form.$invalid">确定</button>
+			<button class="btn default" type="button" ng-click="cancel()">取消</button>
+		</div>
+	</body>
+
+</html>

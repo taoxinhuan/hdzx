@@ -1,0 +1,72 @@
+drop database if exists db_hdzx;
+
+create database db_hdzx;
+
+use db_hdzx; 
+
+CREATE TABLE tb_dept(  
+    dept_num char(10) NOT NULL PRIMARY KEY,  
+    dept_name varchar(20) NOT NULL,  
+    dept_chairman varchar(10) NOT NULL,  
+    dept_tel varchar(15) NOT NULL,  
+    dept_desc text NOT NULL
+);
+CREATE TABLE tb_major(  
+    major_num char(10) NOT NULL PRIMARY KEY,  
+    dept_num char(10) NOT NULL,  
+    major_name varchar(20) NOT NULL,  
+    major_assistant varchar(10) NOT NULL,  
+    major_tel varchar(15) NOT NULL,  
+    FOREIGN KEY (dept_num) REFERENCES tb_dept(dept_num)  
+);
+  
+CREATE TABLE tb_student(  
+    student_num char(10) NOT NULL PRIMARY KEY,  
+    major_num char(10) NOT NULL,  
+    student_name varchar(10) NULL,  
+    student_sex char(2) NOT NULL,  
+    student_birthday datetime NOT NULL,  
+    student_password varchar(20) NOT NULL,
+    dept_num  char(10) NOT NULL  ,
+    FOREIGN KEY (major_num) REFERENCES tb_major(major_num)  
+)  ;
+CREATE TABLE tb_teacher(  
+    teacher_num char(10) NOT NULL PRIMARY KEY,  
+    dept_num char(10) NOT NULL,  
+    teacher_name varchar(10) NOT NULL,  
+    teacher_sex char(2) NOT NULL,  
+    teacher_birthday datetime NOT NULL,  
+    teacher_title varchar(20) NULL,
+    teacher_password varchar(20) NOT NULL,  
+    FOREIGN KEY (dept_num) REFERENCES tb_dept(dept_num)  
+)  ;
+CREATE TABLE tb_manager(  
+manager_num char(10) NOT NULL PRIMARY KEY,  
+manager_password varchar(20) NOT NULL,
+manager_name varchar(10) NOT NULL  
+ ) ;
+CREATE TABLE tb_course(  
+    course_num char(10) NOT NULL PRIMARY KEY, 
+    teacher_num char(10) NOT NULL, 
+    course_name varchar(20) NOT NULL,  
+    course_credit float NOT NULL,  
+    course_class smallint NOT NULL,  
+    course_desc text NOT NULL 
+);
+CREATE TABLE tb_grade(  
+    student_num char(10) NOT NULL,  
+    course_num char(10) NOT NULL,  
+    teacher_num char(10) NOT NULL,  
+    grade int NULL,  
+    FOREIGN KEY (student_num) REFERENCES tb_student(student_num),  
+    FOREIGN KEY (course_num) REFERENCES tb_Course(course_num),  
+    FOREIGN KEY (teacher_num) REFERENCES tb_teacher(teacher_num)  
+) ;
+CREATE TABLE tb_control(  
+   id char(1) NOT NULL,
+  select_course bit(1) NOT NULL,
+  input_grade bit(1) NOT NULL
+) ;
+insert into tb_control values(1,1,1);
+insert into tb_manager values("root","admin","≤‚ ‘’À∫≈");
+

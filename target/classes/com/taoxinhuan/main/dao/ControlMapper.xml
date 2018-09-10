@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxinhuan.main.dao.ControlMapper">
+	<resultMap id="BaseResultMap" type="com.taoxinhuan.main.PO.Control">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="select_course"  property="selectCourse" />
+		<result column="input_grade"  property="inputGrade" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, select_course, input_grade
+	</sql>
+	<select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_control
+		where id = #{id,jdbcType=CHAR}
+	</select>
+
+	<update id="update" parameterType="com.taoxinhuan.main.PO.Control">
+		update tb_control
+		<set>
+			<if test="selectCourse != null">
+				select_course = #{selectCourse,jdbcType=VARCHAR},
+			</if>
+			<if test="inputGrade != null">
+				input_grade = #{inputGrade,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=CHAR}
+	</update>
+</mapper>

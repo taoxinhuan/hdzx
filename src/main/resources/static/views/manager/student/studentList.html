@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" href="../../../css/bootstrap.css" />
+	<link rel="stylesheet" href="../../../css/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+	<link rel="stylesheet" href="../../../icon/css/font-awesome.css" />
+	<script type="text/javascript" src="../../../js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="../../../js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../../js/bootstrap.bundle.js"></script>
+	<script type="text/javascript" src="../../../css/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="../../../js/angularjs/angular.js"></script>
+	<script type="text/javascript" src="../../../js/angularjs/plugins/angular-ui-router.js"></script>
+	<script type="text/javascript" src="../../../js/angularjs/plugins/angular-toastr/angular-toastr.js"></script>
+	<script type="text/javascript" src="../../../js/angularjs/plugins/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="../../../js/app.js"></script>
+	<script type="text/javascript" src="studentListController.js"></script>
+
+	<body ng-app="app" ng-controller="studentListController">
+		<label class="form-control">学生列表</label>
+		<div data-page-content>
+			<div data-page-search>
+				<div class="row">
+					<div class="col-xs-5">
+						<div class="form-group">
+							<label class="col-xs-3 control-label city-label">系部名称：</label>
+							<div class="col-xs-8">
+								<select ng-model="vo.deptNum" class="form-control" ng-change="listMajorByDeptNum()">
+									<option value="">请选择</option>
+									<option ng-repeat="dept in vm.depts" value="{{dept.deptNum}}">{{dept.deptName}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-5">
+						<div class="form-group">
+							<label class="col-xs-3 control-label city-label">专业名称：</label>
+							<div class="col-xs-8">
+								<select ng-model="vo.majorNum" class="form-control" ng-click="check()">
+									<option value="">请选择</option>
+									<option ng-repeat="major in vm.majors" value="{{major.majorNum}}">{{major.majorName}}</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-5">
+						<div class="form-group">
+							<label class="col-xs-3 control-label city-label">学生姓名：</label>
+							<div class="col-xs-8">
+								<input class="form-control" type="text" ng-model="vo.studentName" />
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-5">
+						<div class="form-group">
+							<label class="col-xs-3 control-label city-label">学生学号：</label>
+							<div class="col-xs-8">
+								<input class="form-control" type="text" ng-model="vo.studentNum" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row" style="height:20px;"></div>
+			<div class="container-fluid">
+				<table class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr class="heading">
+							<th width="5%">序号</th>
+							<th>学号</th>
+							<th>学生姓名</th>
+							<th>系部</th>
+							<th>专业</th>
+							<th>学生性别</th>
+							<th>出生年月</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="odd gradeX" ng-repeat="item in vm.items">
+							<td ng-bind="$index+1+((vm.pages.pageIndex-1)*vm.pages.pageSize)"></td>
+							<td ng-bind="item.studentNum"></td>
+							<td ng-bind="item.studentName"></td>
+							<td ng-bind="item.deptName"></td>
+							<td ng-bind="item.majorName"></td>
+							<td ng-bind="item.studentSex"></td>
+							<td ng-bind="item.studentBirthday"></td>
+							<td>
+								<button ng-click="update(item.studentNum)" class="btn btn-xs default btn-editable"><i class="fa fa-edit"></i>编辑</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<pagination boundary-links="true" items-per-page="vm.pages.pageSize" total-items="vm.pages.totalResult" ng-model="vm.pages.pageIndex" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" ng-click="getStudentList()"></pagination><br>
+				<h5>每页 {{vm.pages.pageSize}}条 | 共 {{vm.pages.totalResult}}
+			条记录 | 当前第 {{vm.pages.pageIndex}} 页 | 共 {{vm.pages.totalPage}} 页</h5>
+			</div>
+		</div>
+	</body>
+
+</html>

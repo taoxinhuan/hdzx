@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>选课系统教师界面</title>
+	</head>
+	<link rel="stylesheet" href="../../css/bootstrap.css" />
+	<link rel="stylesheet" href="../../css/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+	<link rel="stylesheet" href="../../icon/css/font-awesome.css" />
+	<link rel="stylesheet" href="../../css/buttons.css" />
+	<script type="text/javascript" src="../../js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="../../js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../js/bootstrap.bundle.js"></script>
+	<script type="text/javascript" src="../../css/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/angular.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/plugins/angular-ui-router.js"></script>
+		<script type="text/javascript" src="../../js/angularjs/plugins/angular-toastr/angular-toastr.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/plugins/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="../../js/app.js"></script>
+	<script type="text/javascript" src="../../js/jsController/teacherIndexController.js"></script>
+
+	<style type="text/css">
+		a {
+			color: #818182;
+		}
+		
+		.bgr {
+			background: url(../../img/bg.jpg) no-repeat fixed;
+			background-size: 100% 100%;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+	<body class="bgr" ng-app="app" ng-controller="teacherIndexController">
+		<table width="100%" border="1" cellspacing="0" cellpadding="0">
+			<tr style="height: 1000px;">
+				<td width="200" valign="top">
+					<div class="card img-thumbnail" style="width: 250px; height: 1000px;">
+						<img class="card-img-top img-thumbnail" src="../../img/07-niutuku.com-324.jpg" style="width: 240px; height: 200px;" />
+						<div id="menu" class="card-body">
+							<h4 class="card-title">Welcome!</h4>
+							<p class="card-text">
+								Teacher -- <span>{{teacher.teacherName}}--{{teacher.teacherTitle}} </span>
+							</p>
+						</div>
+						<div class="card-body">
+							<span class="button-wrap">
+							    <button class="button button-circle"  ng-click="courseList()" >
+							      <i class="fa fa-tasks"></i>
+							    </button>
+							</span>
+							<span class="button-wrap">
+							    <button class="button button-circle" ng-click="teacherInfo()">
+							      <i class="fa fa-user"></i>
+							    </button>
+							</span>
+						</div>
+						<div class="card-body col-xs-offset-1">
+							<h4 class="card-title">录入成绩（状态）:
+							   <span ng-if="control.inputGrade==true">当前可录</span>
+							   <span ng-if="control.inputGrade==false">当前不可录</span>
+							</h4>
+							<p class="card-text">录入成绩</p>
+							<span class="button-wrap" ng-if="control.inputGrade==true">
+							    <a class="button button-pill button-raised button-primary"  href="inputGrade.html"  target="display"> <i class="fa fa-cloud"></i>录入成绩</a>
+							</span>
+							<span class="button-wrap" ng-if="control.inputGrade==false">
+							    <a class="button button-pill button-raised button-caution" href="#"> <i class="fa fa-cloud"></i>录入成绩</a>
+							</span>
+						</div>
+					</div>
+				</td>
+				<td valign="top" align="left">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<tr height="100">
+							<td align="center" style="font-family: 楷体; font-size: 50px;">欢迎登录学生选课系统</td>
+						</tr>
+						<tr height="900">
+							<td><iframe name="display" frameborder="no" width="100%" height="900"></iframe></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+
+</html>

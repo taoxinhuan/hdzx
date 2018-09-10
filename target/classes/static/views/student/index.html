@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>选课系统学生界面</title>
+	</head>
+	<link rel="stylesheet" href="../../css/bootstrap.css" />
+	<link rel="stylesheet" href="../../css/bootstrap-datepicker/css/bootstrap-datepicker.css" />
+	<link rel="stylesheet" href="../../icon/css/font-awesome.css" />
+	<link rel="stylesheet" href="../../css/buttons.css" />
+	<script type="text/javascript" src="../../js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="../../js/bootstrap.js"></script>
+	<script type="text/javascript" src="../../js/bootstrap.bundle.js"></script>
+	<script type="text/javascript" src="../../css/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/angular.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/plugins/angular-ui-router.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/plugins/angular-toastr/angular-toastr.js"></script>
+	<script type="text/javascript" src="../../js/angularjs/plugins/ui-bootstrap-tpls.min.js"></script>
+	<script type="text/javascript" src="../../js/app.js"></script>
+	<script type="text/javascript" src="../../js/jsController/studentIndexController.js"></script>
+
+	<style type="text/css">
+		a {
+			color: #818182;
+		}
+		
+		.bgr {
+			background: url(../../img/bg.jpg) no-repeat fixed;
+			background-size: 100% 100%;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+	<body class="bgr" ng-app="app" ng-controller="studentIndexController">
+		<table width="100%" border="1" cellspacing="0" cellpadding="0">
+			<tr style="height: 1000px;">
+				<td width="200" valign="top">
+					<div class="card img-thumbnail" style="width: 250px; height: 1000px;">
+						<img class="card-img-top img-thumbnail" src="../../img/07-niutuku.com-324.jpg" style="width: 240px; height: 200px;" />
+						<div id="menu" class="card-body">
+							<h4 class="card-title">Welcome!</h4>
+							<p class="card-text">
+								Student -- <span>{{student.studentName}}--{{student.studentSex}} </span>
+							</p>
+						</div>
+						<div class="card-body">
+							<span class="button-wrap">
+							    <button class="button button-circle"  ng-click="CourseSelectList()" target="display">
+							      <i class="fa fa-tasks"></i>
+							    </button>
+							</span>
+							<span class="button-wrap">
+							    <button class="button button-circle" ng-click="studentInfo()">
+							      <i class="fa fa-user"></i>
+							    </button>
+							</span>
+							<span class="button-wrap">
+							    <button class="button button-circle"  ng-click="gradeList()" target="display">
+							      <i class="fa fa-bar-chart"></i>
+							    </button>
+							</span>
+						</div>
+						<div class="card-body col-xs-offset-1" >
+							<h4 class="card-title">选课（状态）:
+							   <span ng-if="control.selectCourse==true">当前可选</span>
+							   <span ng-if="control.selectCourse==false">当前不可选</span>
+							</h4>
+							<p class="card-text">选课凑足8学分即可</p>
+							<span class="button-wrap" ng-if="control.selectCourse==true">
+							    <a class="button button-pill button-raised button-primary"  href="selectCourse.html"  target="display"> <i class="fa fa-cloud"></i>选课</a>
+							</span>
+							<span class="button-wrap" ng-if="control.selectCourse==false">
+							    <a class="button button-pill button-raised button-caution" href="#"> <i class="fa fa-cloud"></i>选课</a>
+							</span>
+						</div>
+					</div>
+				</td>
+				<td valign="top" align="left">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<tr height="100">
+							<td align="center" style="font-family: 楷体; font-size: 50px;">欢迎登录学生选课系统</td>
+						</tr>
+						<tr height="900">
+							<td><iframe name="display" frameborder="no" width="100%" height="900"></iframe></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+
+	</body>
+
+</html>
